@@ -1,0 +1,28 @@
+{
+  "name": "microservice04",
+  "version": "0.0.1",
+  "description": "This service will be a rabbitmq message controller for the whole project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ntua/SaaS23-20.git"
+  },
+  "keywords": [
+    "microservice",
+    "architecture",
+    "SaaS"
+  ],
+  "author": "Aleandros Ioannidis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ntua/SaaS23-20/issues"
+  },
+  "homepage": "https://github.com/ntua/SaaS23-20#readme",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.0.3"
+  }
+}
