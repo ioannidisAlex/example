@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  messaging:
+    build: ./messaging
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - ./env/rabbitmq.env
+    environment:
+      - RABBITMQ_MANAGEMENT_ENABLED=true
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - QUEUE_NAME=my_queue
+      - EXCHANGE_NAME=wtf
+      - ROUTING_KEY=routing_key
+  setup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - messaging
+    command: ["bash", "-c", "sleep 30 && node setup.js"]
