@@ -14,16 +14,12 @@ const NavigationItems = () => {
           </a>
           <ul className="navigation-list">
             <li>
-              <NavigationItem link="/newchart">Show All</NavigationItem>
-            </li>
-            <li>
               <NavigationItem link="/newchart" auth={!token}>
                 New Chart
               </NavigationItem>
             </li>
           </ul>
         </div>
-
         <div className="login-container">
           {token ? (
             <NavigationItem link="/logout">Logout</NavigationItem>
