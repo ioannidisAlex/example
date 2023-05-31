@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Snackbar } from "@mui/material";
+import "./DragAndDrop.css";
+import UploadIcon from "@mui/icons-material/Upload";
 
 function DragDropFile() {
   // drag state
@@ -8,7 +10,7 @@ function DragDropFile() {
   const inputRef = React.useRef(null);
   const [errorAlertOpen, setErrorAlertOpen] = React.useState(false);
 
-  // handle drag eventse
+  // handle drag events
   const handleDrag = function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -28,20 +30,20 @@ function DragDropFile() {
       // handleFiles(e.dataTransfer.files);
       const formData = new FormData();
       console.log(e.dataTransfer.files);
-      formData.append("file", e.dataTransfer.files[0]);
+      formData.append("csv", e.dataTransfer.files[0]);
 
-      fetch("/backend/chart-endpoint", {
+      fetch("http://localhost:3001/parse-csv?chtype=line&user=kwstas", {
         method: "POST",
         body: formData,
+        mode: "no-cors",
       })
         .then((response) => {
           if (response.ok) {
-            // Handle succesful response from the backend
+            // Handle the response from the backend
             console.log(response);
             // Redirect to yourchart page or handle the response accordingly
             window.location.href = "/yourchart";
           } else {
-            // Handle error response from the backend
             setErrorAlertOpen(true);
           }
         })
@@ -66,14 +68,19 @@ function DragDropFile() {
         body: formData,
       })
         .then((response) => {
-          // Handle the response from the backend
-          console.log(response);
-          // Redirect to yourchart page or handle the response accordingly
-          window.location.href = "/yourchart";
+          if (response.ok) {
+            // Handle the response from the backend
+            console.log(response);
+            // Redirect to yourchart page or handle the response accordingly
+            window.location.href = "/yourchart";
+          } else {
+            setErrorAlertOpen(true);
+          }
         })
         .catch((error) => {
           // Handle error
           console.error(error);
+          setErrorAlertOpen(true);
         });
     }
   };
@@ -122,17 +129,12 @@ function DragDropFile() {
             onDrop={handleDrop}
           ></div>
         )}
-        <Snackbar
-          open={errorAlertOpen}
-          autoHideDuration={6000}
-          onClose={handleAlertClose}
-          message="Error occurred while processing the file."
-        />
         <Button
           id="form-Button"
           variant="contained"
           color="success"
           href="/yourchart"
+          startIcon={<UploadIcon />}
         >
           Upload and create chart
         </Button>
@@ -145,6 +147,13 @@ function DragDropFile() {
           Cancel
         </Button>
       </form>
+      <Snackbar
+        open={errorAlertOpen}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        message="Error occurred while processing the file."
+        color="error"
+      />
     </div>
   );
 }
